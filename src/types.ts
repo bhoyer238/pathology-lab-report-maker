@@ -33,4 +33,5 @@ export interface Report {
   collectedBy: string;
   verifiedBy?: string;
   totalPrice: number;
+  createdAt: string; 
 }

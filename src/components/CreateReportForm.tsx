@@ -178,7 +178,8 @@ export function CreateReportForm({ onSave, onUpdate, onCancel, initialReport }: 
       date: initialReport ? initialReport.date : new Date().toISOString().split('T')[0],
       status: status,
       collectedBy: initialReport ? initialReport.collectedBy : 'Lab Technician',
-      totalPrice: totalPrice
+      totalPrice: totalPrice,
+      createdAt: new Date().toISOString()
     };
 
     if (initialReport) {

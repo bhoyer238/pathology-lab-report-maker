@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
 import type { Report } from './types';
-
 import { initializeData } from './utils/data';
 import { storage } from './utils/storage';
-
 import { PatientList } from './components/PatientList';
 import { ReportViewer } from './components/ReportViewer';
 import { CreateReportForm } from './components/CreateReportForm';
 import { ThemeToggle } from './components/ThemeToggle';
 import { DataManagement } from './components/DataManagement';
-
 import { Activity, Plus } from 'lucide-react';
 import { Button } from './components/ui/button';
+import { Dashboard } from './components/Dashboard';
 
-type View = 'list' | 'create' | 'view';
+type View = 'list' | 'create' | 'view' | 'dashboard';
+
 
 function App() {
   const [reports, setReports] = useState<Report[]>([]);
@@ -106,7 +105,7 @@ function App() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentView, reports]);
-  
+
 
   /* -------------------- BACKUP -------------------- */
   const handleBackup = () => {
@@ -164,15 +163,25 @@ function App() {
           </div>
 
           <div className="flex items-center gap-3">
-            {currentView === 'list' && (
-              <Button onClick={handleCreateReport}>
-                <Plus className="w-4 h-4 mr-2" />
-                New Report
-              </Button>
-            )}
+
+            <Button onClick={() => setCurrentView('dashboard')}>
+              Dashboard
+            </Button>
+
+            <Button onClick={() => setCurrentView('list')}>
+              Reports
+            </Button>
+
+            <Button onClick={handleCreateReport}>
+              <Plus className="w-4 h-4 mr-2" />
+              New Report
+            </Button>
+
             <DataManagement onBackup={handleBackup} onRestore={handleRestore} />
             <ThemeToggle />
+
           </div>
+
         </div>
       </header>
 
@@ -195,6 +204,11 @@ function App() {
             onEdit={() => handleEditReport(selectedReport)}
           />
         )}
+
+       {currentView === 'dashboard' && (
+  <Dashboard reports={reports} />
+)}
+
 
         {currentView === 'list' && (
           <PatientList
